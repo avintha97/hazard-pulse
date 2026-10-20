@@ -20,8 +20,8 @@
   --lvl-red: #ff4d6d;
   --lvl-orange: #ff9f1c;
   --lvl-green: #3ddc97;
-  --font-ui: "Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --font-data: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --font-ui: "Nunito", Calibri, sans-serif;
+  --font-data: "Nunito", Calibri, sans-serif;
   --r-panel: 14px;
   --r-ctl: 10px;
   --inset-t: env(safe-area-inset-top, 0px);
