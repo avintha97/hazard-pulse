@@ -1,0 +1,72 @@
+/* Design tokens: a dark "space" palette (default) and a light one, one accent, one colour per hazard type. */
+:root {
+  color-scheme: dark;
+  --space: #05080d;        /* page behind the globe */
+  --ocean: #0b1726;
+  --land: #1b2a3b;
+  --border-line: rgba(150, 185, 220, .16);
+  --glass: rgba(14, 20, 30, .72);
+  --glass-strong: rgba(14, 20, 30, .9);
+  --glass-line: rgba(170, 200, 235, .12);
+  --hover: rgba(170, 200, 235, .08);
+  --fg: #eef3f9;
+  --fg-2: #a7b4c4;
+  --fg-3: #6f7d8f;
+  --accent: #6cc4ff;       /* UI accent: selection, scrubber, focus */
+  --quake: #ffd23f;
+  --quake-strong: #ff4d6d;
+  --fire: #ff5a36;
+  --storm: #b69cff;
+  --lvl-red: #ff4d6d;
+  --lvl-orange: #ff9f1c;
+  --lvl-green: #3ddc97;
+  --font-ui: "Nunito", Calibri, sans-serif;
+  --font-data: "Nunito", Calibri, sans-serif;
+  --r-panel: 14px;
+  --r-ctl: 10px;
+  --inset-t: env(safe-area-inset-top, 0px);
+  --inset-r: env(safe-area-inset-right, 0px);
+  --inset-b: env(safe-area-inset-bottom, 0px);
+  --inset-l: env(safe-area-inset-left, 0px);
+  --panel-w: 340px;
+  --surface: rgba(255, 255, 255, .035);   /* KPI cards */
+  --chip-bg: rgba(255, 255, 255, .05);
+  --chip-on: rgba(255, 255, 255, .14);
+  --scrollbar: rgba(255, 255, 255, .15);
+  --map-glow: #0a1420;
+  --map-label: rgba(238, 243, 249, .9);
+  --map-label-halo: rgba(0, 0, 0, .8);
+  --shadow: rgba(0, 0, 0, .35);
+  --tl-on: rgba(108, 196, 255, .75);
+  --tl-off: rgba(167, 180, 196, .22);
+  --tl-area: rgba(108, 196, 255, .07);
+}
+/* Light theme: same layout and hazard colours on a pale, airy palette. */
+:root[data-theme="light"] {
+  color-scheme: light;
+  --space: #e9eef4;
+  --ocean: #9fc2e0;
+  --land: #f7f5ef;
+  --border-line: rgba(40, 60, 90, .16);
+  --glass: rgba(255, 255, 255, .8);
+  --glass-strong: rgba(255, 255, 255, .95);
+  --glass-line: rgba(30, 50, 80, .12);
+  --hover: rgba(30, 50, 80, .06);
+  --fg: #132233;
+  --fg-2: #46566a;
+  --fg-3: #6d7b8f;
+  --accent: #1a86d4;
+  --surface: rgba(30, 50, 80, .04);
+  --chip-bg: rgba(30, 50, 80, .06);
+  --chip-on: #fff;
+  --scrollbar: rgba(30, 50, 80, .2);
+  --map-glow: #f4f7fa;
+  --map-label: #132233;
+  --map-label-halo: rgba(255, 255, 255, .9);
+  --shadow: rgba(30, 50, 80, .14);
+  --tl-on: rgba(26, 134, 212, .75);
+  --tl-off: rgba(70, 86, 106, .2);
+  --tl-area: rgba(26, 134, 212, .08);
+}
+html, body { height: 100%; }
+body {

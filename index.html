@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="description" content="Hazard Pulse: earthquakes, wildfires, storms and disaster alerts on an interactive globe.">
+  <meta name="theme-color" content="#05080d">
+  <title>Hazard Pulse</title>
+  <script>try { if (JSON.parse(localStorage.getItem('hazard-pulse:look') || '{}').theme === 'light') document.documentElement.dataset.theme = 'light'; } catch {}</script>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&display=swap">
+</head>
+<body>
+  <div id="map" role="region" aria-label="Interactive globe showing earthquakes, wildfires, storms and disaster alerts. Drag to rotate, scroll to zoom."></div>
+
+  <div class="brand glass">
+    <svg class="brand-mark" viewBox="0 0 26 26" aria-hidden="true">
+      <circle cx="13" cy="13" r="11" fill="none" style="stroke: var(--accent)" stroke-width="1.6" opacity=".5"/>
+      <path d="M2 13h5l2-5 3.5 10 3-7 1.5 2H24" fill="none" style="stroke: var(--fg)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <h1>Hazard Pulse</h1>
+    <span class="tag">Beta</span>
+  </div>
+
+  <label class="search glass" for="q">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+    <input id="q" type="search" placeholder="Search events or places" autocomplete="off">
+  </label>
+
+  <nav class="rail glass" id="rail" aria-label="Map layers"></nav>
+
+  <div class="legend glass" aria-label="Legend">
+    <span class="ttl">Magnitude</span>
+    <div class="row">
+      <svg width="96" height="22" viewBox="0 0 96 22" aria-hidden="true">
+        <circle cx="8" cy="11" r="3.5" fill="rgba(255,210,63,.25)" stroke="#ffd23f" stroke-width="1.2"/>
+        <circle cx="34" cy="11" r="6.5" fill="rgba(255,210,63,.25)" stroke="#ffd23f" stroke-width="1.2"/>
+        <circle cx="72" cy="11" r="10" fill="rgba(255,77,109,.25)" stroke="#ff4d6d" stroke-width="1.2"/>
+      </svg>
+    </div>
+    <div class="row num scale"><span>3</span><span>5</span><span>6+</span></div>
+    <span class="ttl">Alert level</span>
+    <div class="row">
+      <span class="lvl" style="--c: var(--lvl-green)"><i></i>Green</span>
+      <span class="lvl" style="--c: var(--lvl-orange)"><i></i>Orange</span>
+      <span class="lvl" style="--c: var(--lvl-red)"><i></i>Red</span>
+    </div>
+  </div>
+
+  <div class="map-ctl glass">
+    <button id="zin" aria-label="Zoom in"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button>
+    <button id="zout" aria-label="Zoom out"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14"/></svg></button>
+    <button id="reset" aria-label="Reset view"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m15.5 8.5-2 5-5 2 2-5z"/></svg></button>
+    <button id="basemapBtn" aria-label="Choose basemap" title="Choose basemap" aria-haspopup="menu" aria-expanded="false" aria-controls="basemapMenu"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 3 9 5-9 5-9-5z"/><path d="m3 13 9 5 9-5"/></svg></button>
+    <button id="themeBtn" aria-label="Switch theme"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"></svg></button>
+  </div>
+  <div class="basemap-menu glass" id="basemapMenu" role="menu" aria-label="Basemap" hidden></div>
+
+  <button class="sheet-toggle glass" id="sheetBtn" aria-expanded="false" aria-controls="panel">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h10"/></svg>Events
+  </button>
+
+  <aside class="panel glass" id="panel" aria-label="Events">
+    <div class="panel-head">
+      <span class="eyebrow"><span class="live-dot" id="liveDot"></span><span id="eyebrow"></span></span>
+      <h2 id="panelTitle"></h2>
+      <span class="sub" id="panelSub"></span>
+      <span class="sample-chip">Sample data · live feeds coming next</span>
+    </div>
+    <div class="kpis" id="kpis"></div>
+    <div class="tabs" role="tablist" id="tabs">
+      <button class="tab" role="tab" data-tab="all" aria-selected="true">All</button>
+      <button class="tab" role="tab" data-tab="quake" aria-selected="false">Earthquakes</button>
+      <button class="tab" role="tab" data-tab="fire" aria-selected="false">Wildfires</button>
+      <button class="tab" role="tab" data-tab="storm" aria-selected="false">Storms</button>
+      <button class="tab" role="tab" data-tab="alert" aria-selected="false">Alerts</button>
+    </div>
+    <div class="list" id="list" role="tabpanel"></div>
+  </aside>
+
+  <section class="timeline glass" aria-label="Timeline">
+    <button class="play" id="play" aria-label="Play timeline">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path id="playIco" d="M7 4.5v15l13-7.5z"/></svg>
+    </button>
+    <div class="tl-top">
+      <span class="tl-time" id="tlTime"></span>
+      <div class="chips" role="group" aria-label="Time window">
+        <button class="chip" data-win="1" aria-pressed="false">24h</button>
+        <button class="chip" data-win="3" aria-pressed="false">3 days</button>
+        <button class="chip" data-win="7" aria-pressed="true">7 days</button>
+      </div>
+    </div>
+    <div class="tl-chart" id="tl" aria-label="Events per 6 hours. Drag to move through time."></div>
+  </section>
+
+  <script type="module" src="/src/main.ts"></script>
+</body>
+</html>

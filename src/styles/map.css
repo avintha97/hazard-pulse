@@ -1,0 +1,69 @@
+/* Map-specific styling: MapLibre controls, popups and the HTML markers for storms, alerts and the selection ring. */
+.maplibregl-canvas { outline: none; }
+#map .maplibregl-ctrl-attrib {
+  background: var(--glass); color: var(--fg-3); border: 1px solid var(--glass-line); font-size: 11px;
+  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+}
+#map .maplibregl-ctrl-attrib a { color: var(--fg-2); }
+#map .maplibregl-ctrl-bottom-right { right: calc(var(--panel-w) + 32px + var(--inset-r)); bottom: calc(96px + var(--inset-b)); }
+@media (max-width: 860px) {
+  #map .maplibregl-ctrl-bottom-right { right: calc(8px + var(--inset-r)); bottom: calc(128px + var(--inset-b)); }
+}
+#map .maplibregl-ctrl-attrib-button { filter: invert(1); background-color: transparent; }
+:root[data-theme="light"] #map .maplibregl-ctrl-attrib-button { filter: none; }
+
+/* Popup */
+.hp-popup { z-index: 7; }
+.hp-popup .maplibregl-popup-tip { display: none; }
+#map .hp-popup .maplibregl-popup-content {
+  position: relative; width: 260px; border-radius: 12px; padding: 12px 14px;
+  background: var(--glass-strong); color: var(--fg);
+  border: 1px solid var(--glass-line);
+  backdrop-filter: blur(14px) saturate(140%); -webkit-backdrop-filter: blur(14px) saturate(140%);
+  box-shadow: 0 8px 28px var(--shadow);
+  font-family: var(--font-ui);
+}
+.hp-popup .p-type { font-size: 10.5px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--c); }
+.hp-popup .p-title { font-size: 16px; font-weight: 700; margin: 4px 0 8px; line-height: 1.25; text-wrap: balance; padding-right: 18px; }
+.hp-popup dl { display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; margin: 0; font-size: 12.5px; }
+.hp-popup dt { color: var(--fg-3); }
+.hp-popup dd { margin: 0; text-align: right; }
+.hp-popup .src { margin-top: 10px; padding-top: 8px; border-top: 1px solid var(--glass-line); font-size: 11px; color: var(--fg-3); }
+.hp-popup .x { position: absolute; top: 8px; right: 8px; width: 24px; height: 24px; border-radius: 6px; color: var(--fg-3); display: grid; place-items: center; }
+.hp-popup .x:hover { background: var(--hover); color: var(--fg); }
+
+/* Storm marker: spinning two-arm spiral with the storm's name */
+.storm-mk { position: relative; width: var(--d); height: var(--d); cursor: pointer; }
+.storm-mk::before {
+  content: ""; position: absolute; inset: 15%; border-radius: 50%;
+  background: color-mix(in srgb, var(--storm) 25%, transparent);
+}
+.storm-mk .spin {
+  position: absolute; inset: 0; border-radius: 50%;
+  border: 2.4px solid transparent; border-top-color: var(--storm); border-bottom-color: var(--storm);
+  animation: spin 2s linear infinite reverse;
+}
+.storm-mk .eye { position: absolute; left: 50%; top: 50%; width: 5px; height: 5px; margin: -2.5px; border-radius: 50%; background: #fff; }
+.storm-mk .name {
+  position: absolute; left: calc(100% + 6px); top: 50%; transform: translateY(-50%);
+  font-size: 11px; font-weight: 600; color: var(--map-label); white-space: nowrap;
+  text-shadow: 0 1px 3px var(--map-label-halo), 0 0 2px var(--map-label-halo);
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Alert marker: diamond coloured by GDACS level */
+.alert-mk {
+  width: 18px; height: 18px; display: grid; place-items: center; cursor: pointer;
+}
+.alert-mk::before {
+  content: ""; position: absolute; width: 13px; height: 13px; transform: rotate(45deg);
+  background: var(--c); box-shadow: 0 0 0 3px rgba(5, 8, 13, .75);
+}
+.alert-mk span { position: relative; font-size: 9px; font-weight: 800; color: #05080d; line-height: 1; }
+
+/* Selection ring */
+.sel-ring {
+  width: 30px; height: 30px; border-radius: 50%; border: 1.6px solid var(--fg); pointer-events: none;
+  animation: breathe 2s ease-in-out infinite;
+}
+@keyframes breathe { 50% { transform: scale(1.14); } }

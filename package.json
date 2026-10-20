@@ -1,0 +1,28 @@
+{
+  "name": "hazard-pulse",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Live disaster and hazard monitor: earthquakes, wildfires, storms and alerts on a Web GIS globe.",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "echarts": "^6.1.0",
+    "maplibre-gl": "^6.15.0",
+    "topojson-client": "^3.1.0",
+    "world-atlas": "^2.0.2"
+  },
+  "devDependencies": {
+    "@types/geojson": "^7946.0.16",
+    "@types/topojson-client": "^3.1.5",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.4"
+  },
+  "engines": {
+    "node": "^20.19.0 || >=22.12.0"
+  }
+}
