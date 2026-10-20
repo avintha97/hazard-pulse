@@ -20,9 +20,11 @@ export function createTimeline(el: HTMLElement, store: Store) {
   for (let b0 = data.start; b0 < data.now; b0 += BIN) bins.push([b0 + BIN / 2, times.filter(t => t >= b0 && t < b0 + BIN).length]);
 
   const chart = echarts.init(el, null, { renderer: 'canvas' });
-  const fg3 = COLORS.fg3, fg = COLORS.fg, font = cssVar('--font-data');
 
   function render() {
+    // Read the colours on each render so a theme switch restyles the chart.
+    const fg3 = COLORS.fg3, fg = COLORS.fg, font = cssVar('--font-data');
+    const barOn = cssVar('--tl-on'), barOff = cssVar('--tl-off');
     const s = store.get(), start = windowStart(data, s);
     const narrow = el.clientWidth < 520;
     chart.setOption({
@@ -47,10 +49,10 @@ export function createTimeline(el: HTMLElement, store: Store) {
           value: [t, n],
           itemStyle: {
             borderRadius: 1.5,
-            color: t + BIN / 2 > start && t - BIN / 2 < s.end ? 'rgba(108,196,255,.75)' : 'rgba(167,180,196,.22)'
+            color: t + BIN / 2 > start && t - BIN / 2 < s.end ? barOn : barOff
           }
         })),
-        markArea: { silent: true, itemStyle: { color: 'rgba(108,196,255,.07)' }, data: [[{ xAxis: start }, { xAxis: s.end }]] },
+        markArea: { silent: true, itemStyle: { color: cssVar('--tl-area') }, data: [[{ xAxis: start }, { xAxis: s.end }]] },
         markLine: {
           silent: true, symbol: ['none', 'circle'], symbolSize: 9, label: { show: false },
           itemStyle: { color: fg }, lineStyle: { color: fg, width: 2, type: 'solid' },
@@ -104,7 +106,7 @@ export function createTimeline(el: HTMLElement, store: Store) {
     store.set({ win: Number(b.dataset.win) as 1 | 3 | 7 });
   });
 
-  store.subscribe((s, prev) => { if (s.end !== prev.end || s.win !== prev.win) render(); });
+  store.subscribe((s, prev) => { if (s.end !== prev.end || s.win !== prev.win || s.theme !== prev.theme) render(); });
   new ResizeObserver(() => { chart.resize(); render(); }).observe(el);
   render();
 }

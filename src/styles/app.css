@@ -13,11 +13,11 @@ button:focus-visible, input:focus-visible { outline: 2px solid var(--accent); ou
   border: 1px solid var(--glass-line);
   backdrop-filter: blur(14px) saturate(140%);
   -webkit-backdrop-filter: blur(14px) saturate(140%);
-  box-shadow: 0 8px 28px rgba(0, 0, 0, .35);
+  box-shadow: 0 8px 28px var(--shadow);
 }
 .num { font-family: var(--font-data); font-variant-numeric: tabular-nums; }
 
-#map { position: fixed; inset: 0; background: radial-gradient(ellipse at 45% 45%, #0a1420 0%, var(--space) 70%); }
+#map { position: fixed; inset: 0; background: radial-gradient(ellipse at 45% 45%, var(--map-glow) 0%, var(--space) 70%); }
 
 /* Brand */
 .brand {
@@ -49,7 +49,7 @@ button:focus-visible, input:focus-visible { outline: 2px solid var(--accent); ou
 }
 .search input::placeholder { color: var(--fg-3); }
 .search input:focus-visible { outline: none; }
-.search:focus-within { border-color: rgba(108, 196, 255, .5); }
+.search:focus-within { border-color: color-mix(in srgb, var(--accent) 50%, transparent); }
 
 /* Layer rail */
 .rail {
@@ -86,6 +86,24 @@ button:focus-visible, input:focus-visible { outline: 2px solid var(--accent); ou
 .map-ctl button { width: 40px; height: 40px; display: grid; place-items: center; color: var(--fg-2); }
 .map-ctl button + button { border-top: 1px solid var(--glass-line); }
 .map-ctl button:hover { background: var(--hover); color: var(--fg); }
+.map-ctl button[aria-expanded="true"] { color: var(--accent); }
+
+/* Basemap menu: opens to the left of the map controls */
+.basemap-menu {
+  position: fixed; z-index: 6;
+  right: calc(var(--panel-w) + 32px + 48px + var(--inset-r));
+  bottom: calc(132px + var(--inset-b));
+  display: flex; flex-direction: column; gap: 2px; padding: 6px; border-radius: var(--r-ctl); min-width: 160px;
+}
+.basemap-menu[hidden] { display: none; }
+.basemap-menu button {
+  display: flex; align-items: center; gap: 10px; padding: 6px 8px; border-radius: 8px;
+  font-size: 13px; font-weight: 600; color: var(--fg-2); text-align: left;
+}
+.basemap-menu button:hover { background: var(--hover); color: var(--fg); }
+.basemap-menu button[aria-checked="true"] { color: var(--fg); background: color-mix(in srgb, var(--accent) 14%, transparent); }
+.basemap-menu i { width: 22px; height: 22px; border-radius: 6px; flex: none; border: 1px solid var(--glass-line); }
+.basemap-menu button[aria-checked="true"] i { box-shadow: 0 0 0 2px var(--accent); }
 
 /* Legend */
 .legend {
@@ -127,7 +145,7 @@ button:focus-visible, input:focus-visible { outline: 2px solid var(--accent); ou
 .kpis { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 0 16px 14px; }
 .kpi {
   padding: 10px 12px; border-radius: var(--r-ctl);
-  background: rgba(255, 255, 255, .035); border: 1px solid var(--glass-line);
+  background: var(--surface); border: 1px solid var(--glass-line);
   display: flex; flex-direction: column; gap: 2px; min-width: 0;
 }
 .kpi .k-lbl { font-size: 11px; font-weight: 600; color: var(--fg-2); display: flex; align-items: center; gap: 6px; }
@@ -143,13 +161,13 @@ button:focus-visible, input:focus-visible { outline: 2px solid var(--accent); ou
 .tab:hover { background: var(--hover); color: var(--fg); }
 .tab[aria-selected="true"] { background: var(--fg); color: var(--space); }
 
-.list { flex: 1; overflow-y: auto; padding: 6px 8px 10px; scrollbar-width: thin; scrollbar-color: rgba(255,255,255,.15) transparent; }
+.list { flex: 1; overflow-y: auto; padding: 6px 8px 10px; scrollbar-width: thin; scrollbar-color: var(--scrollbar) transparent; }
 .item {
   width: 100%; text-align: left; display: grid; grid-template-columns: 32px 1fr auto; gap: 10px; align-items: center;
   padding: 9px 8px; border-radius: var(--r-ctl);
 }
 .item:hover { background: var(--hover); }
-.item.sel { background: rgba(108, 196, 255, .12); box-shadow: inset 0 0 0 1px rgba(108, 196, 255, .35); }
+.item.sel { background: color-mix(in srgb, var(--accent) 12%, transparent); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 35%, transparent); }
 .item .ico {
   width: 32px; height: 32px; border-radius: 9px; display: grid; place-items: center;
   color: var(--c); background: color-mix(in srgb, var(--c) 14%, transparent);
@@ -182,9 +200,9 @@ button:focus-visible, input:focus-visible { outline: 2px solid var(--accent); ou
 .tl-top { display: flex; align-items: center; gap: 10px; min-width: 0; }
 .tl-time { font-size: 13px; font-weight: 600; white-space: nowrap; }
 .tl-time .num { font-weight: 500; }
-.chips { margin-left: auto; display: flex; gap: 2px; background: rgba(255,255,255,.05); padding: 2px; border-radius: 8px; }
+.chips { margin-left: auto; display: flex; gap: 2px; background: var(--chip-bg); padding: 2px; border-radius: 8px; }
 .chip { padding: 3px 9px; font-size: 12px; font-weight: 600; color: var(--fg-2); border-radius: 6px; }
-.chip[aria-pressed="true"] { background: rgba(255,255,255,.14); color: var(--fg); }
+.chip[aria-pressed="true"] { background: var(--chip-on); color: var(--fg); }
 .chip:hover { color: var(--fg); }
 .tl-chart { position: relative; height: 46px; min-width: 0; }
 .tl-chart { cursor: ew-resize; touch-action: none; }
@@ -203,6 +221,7 @@ button:focus-visible, input:focus-visible { outline: 2px solid var(--accent); ou
   .panel.open { transform: none; }
   .timeline { left: calc(8px + var(--inset-l)); right: calc(8px + var(--inset-r)); bottom: calc(8px + var(--inset-b)); }
   .map-ctl { right: calc(16px + var(--inset-r)); bottom: calc(196px + var(--inset-b)); }
+  .basemap-menu { right: calc(64px + var(--inset-r)); bottom: calc(196px + var(--inset-b)); }
   .sheet-toggle {
     display: flex; align-items: center; gap: 8px; position: fixed; z-index: 7;
     top: calc(16px + var(--inset-t)); right: calc(16px + var(--inset-r));
@@ -210,6 +229,11 @@ button:focus-visible, input:focus-visible { outline: 2px solid var(--accent); ou
   }
   .tl-time .yr { display: none; }
 }
+/* Light theme: hazard colours are tuned for dark glass, so darken them where they are used as text or icons. */
+:root[data-theme="light"] :is(.badge, .item .ico, .layer-btn[aria-pressed="true"], .sample-chip, .hp-popup .p-type) {
+  color: color-mix(in srgb, var(--c, var(--lvl-orange)) 70%, #000);
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
 }

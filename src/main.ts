@@ -7,10 +7,14 @@ import { createMap } from './map';
 import { createRail } from './ui/rail';
 import { createPanel } from './ui/panel';
 import { createTimeline } from './ui/timeline';
+import { applyTheme, createLookControls, savedLook } from './ui/look';
 
 async function main() {
   const data = await loadDataset();
-  const store = createStore(data);
+  const store = createStore(data, savedLook());
+  // Registered first so the new theme's colours are in place before the map and timeline redraw.
+  applyTheme(store.get().theme);
+  store.subscribe((s, prev) => { if (s.theme !== prev.theme) applyTheme(s.theme); });
 
   // Selecting an event opens its popup; from the list it also flies the globe there.
   function select(e: HazardEvent | null, fly = true) {
@@ -22,6 +26,7 @@ async function main() {
   createRail(document.getElementById('rail')!, store);
   createPanel(store, select);
   createTimeline(document.getElementById('tl')!, store);
+  createLookControls(store);
 
   document.getElementById('zin')!.onclick = map.zoomIn;
   document.getElementById('zout')!.onclick = map.zoomOut;

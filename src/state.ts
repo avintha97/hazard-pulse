@@ -3,6 +3,8 @@ import { DAY, HOUR } from './time';
 
 export type LayerKey = HazardType | 'night';
 export type Tab = 'all' | HazardType;
+export type Theme = 'dark' | 'light';
+export type BasemapId = 'dark' | 'light' | 'satellite' | 'topo' | 'streets';
 
 export interface AppState {
   layers: Record<LayerKey, boolean>;
@@ -14,6 +16,8 @@ export interface AppState {
   q: string;
   sel: HazardEvent | null;
   playing: boolean;
+  theme: Theme;
+  basemap: BasemapId;
 }
 
 type Listener = (s: AppState, prev: AppState) => void;
@@ -22,10 +26,10 @@ type Listener = (s: AppState, prev: AppState) => void;
  * A tiny store: one state object, `set` merges a patch and notifies every subscriber.
  * Modules compare `s` with `prev` to skip work they don't need.
  */
-export function createStore(data: Dataset) {
+export function createStore(data: Dataset, look: Pick<AppState, 'theme' | 'basemap'>) {
   let state: AppState = {
     layers: { quake: true, fire: true, storm: true, alert: true, night: true },
-    win: 7, end: data.now, tab: 'all', q: '', sel: null, playing: false
+    win: 7, end: data.now, tab: 'all', q: '', sel: null, playing: false, ...look
   };
   const listeners = new Set<Listener>();
   return {

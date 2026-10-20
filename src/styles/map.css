@@ -10,6 +10,7 @@
   #map .maplibregl-ctrl-bottom-right { right: calc(8px + var(--inset-r)); bottom: calc(128px + var(--inset-b)); }
 }
 #map .maplibregl-ctrl-attrib-button { filter: invert(1); background-color: transparent; }
+:root[data-theme="light"] #map .maplibregl-ctrl-attrib-button { filter: none; }
 
 /* Popup */
 .hp-popup { z-index: 7; }
@@ -19,7 +20,7 @@
   background: var(--glass-strong); color: var(--fg);
   border: 1px solid var(--glass-line);
   backdrop-filter: blur(14px) saturate(140%); -webkit-backdrop-filter: blur(14px) saturate(140%);
-  box-shadow: 0 8px 28px rgba(0, 0, 0, .35);
+  box-shadow: 0 8px 28px var(--shadow);
   font-family: var(--font-ui);
 }
 .hp-popup .p-type { font-size: 10.5px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--c); }
@@ -45,8 +46,8 @@
 .storm-mk .eye { position: absolute; left: 50%; top: 50%; width: 5px; height: 5px; margin: -2.5px; border-radius: 50%; background: #fff; }
 .storm-mk .name {
   position: absolute; left: calc(100% + 6px); top: 50%; transform: translateY(-50%);
-  font-size: 11px; font-weight: 600; color: rgba(238, 243, 249, .9); white-space: nowrap;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, .8);
+  font-size: 11px; font-weight: 600; color: var(--map-label); white-space: nowrap;
+  text-shadow: 0 1px 3px var(--map-label-halo), 0 0 2px var(--map-label-halo);
 }
 @keyframes spin { to { transform: rotate(360deg); } }
 
@@ -58,11 +59,11 @@
   content: ""; position: absolute; width: 13px; height: 13px; transform: rotate(45deg);
   background: var(--c); box-shadow: 0 0 0 3px rgba(5, 8, 13, .75);
 }
-.alert-mk span { position: relative; font-size: 9px; font-weight: 800; color: var(--space); line-height: 1; }
+.alert-mk span { position: relative; font-size: 9px; font-weight: 800; color: #05080d; line-height: 1; }
 
 /* Selection ring */
 .sel-ring {
-  width: 30px; height: 30px; border-radius: 50%; border: 1.6px solid #fff; pointer-events: none;
+  width: 30px; height: 30px; border-radius: 50%; border: 1.6px solid var(--fg); pointer-events: none;
   animation: breathe 2s ease-in-out infinite;
 }
 @keyframes breathe { 50% { transform: scale(1.14); } }

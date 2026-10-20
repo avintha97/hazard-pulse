@@ -4,7 +4,7 @@ import 'maplibre-gl/dist/maplibre-gl.css';
 import workerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs?url';
 import type { HazardEvent } from '../data';
 import { type Store, eventLngLat } from '../state';
-import { baseStyle, loadWorld, setNight } from './basemap';
+import { baseStyle, loadWorld, setBasemap, setNight } from './basemap';
 import { addHazardLayers } from './hazards';
 import { popupContent } from '../ui/popup';
 import { cssVar } from '../ui/format';
@@ -66,6 +66,7 @@ export function createMap(container: HTMLElement, store: Store, select: (e: Haza
   map.on('load', () => {
     loadWorld(map).catch(err => console.error('Could not load world outlines', err));
     hazards = addHazardLayers(map, store, e => select(e, false));
+    setBasemap(map, store.get().basemap, store.get().theme);
     render();
   });
 
@@ -89,6 +90,7 @@ export function createMap(container: HTMLElement, store: Store, select: (e: Haza
 
   store.subscribe((s, prev) => {
     if (s.end !== prev.end || s.win !== prev.win || s.layers !== prev.layers || s.sel !== prev.sel) render();
+    if (hazards && (s.basemap !== prev.basemap || s.theme !== prev.theme)) setBasemap(map, s.basemap, s.theme);
   });
 
   return {
