@@ -1,0 +1,34 @@
+/* Design tokens: one dark "space" palette, one accent, one colour per hazard type. */
+:root {
+  color-scheme: dark;
+  --space: #05080d;        /* page behind the globe */
+  --ocean: #0b1726;
+  --land: #1b2a3b;
+  --border-line: rgba(150, 185, 220, .16);
+  --glass: rgba(14, 20, 30, .72);
+  --glass-strong: rgba(14, 20, 30, .9);
+  --glass-line: rgba(170, 200, 235, .12);
+  --hover: rgba(170, 200, 235, .08);
+  --fg: #eef3f9;
+  --fg-2: #a7b4c4;
+  --fg-3: #6f7d8f;
+  --accent: #6cc4ff;       /* UI accent: selection, scrubber, focus */
+  --quake: #ffd23f;
+  --quake-strong: #ff4d6d;
+  --fire: #ff5a36;
+  --storm: #b69cff;
+  --lvl-red: #ff4d6d;
+  --lvl-orange: #ff9f1c;
+  --lvl-green: #3ddc97;
+  --font-ui: "Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-data: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --r-panel: 14px;
+  --r-ctl: 10px;
+  --inset-t: env(safe-area-inset-top, 0px);
+  --inset-r: env(safe-area-inset-right, 0px);
+  --inset-b: env(safe-area-inset-bottom, 0px);
+  --inset-l: env(safe-area-inset-left, 0px);
+  --panel-w: 340px;
+}
+html, body { height: 100%; }
+body {
